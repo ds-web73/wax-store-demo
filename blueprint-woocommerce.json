@@ -74,7 +74,19 @@
 		},
 		{
 			"step": "runPHP",
-			"code": "<?php require_once '/wordpress/wp-load.php'; require '/wordpress/wp-content/uploads/waxsc-demo/setup-woocommerce.php';"
+			"code": "<?php define( 'WAXSC_DEMO_STEP', 'config' ); require_once '/wordpress/wp-load.php'; require '/wordpress/wp-content/uploads/waxsc-demo/setup-woocommerce.php';"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php define( 'WAXSC_DEMO_STEP', 'convert' ); require_once '/wordpress/wp-load.php'; require '/wordpress/wp-content/uploads/waxsc-demo/setup-woocommerce.php';"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php define( 'WAXSC_DEMO_STEP', 'convert' ); require_once '/wordpress/wp-load.php'; require '/wordpress/wp-content/uploads/waxsc-demo/setup-woocommerce.php';"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php define( 'WAXSC_DEMO_STEP', 'convert' ); require_once '/wordpress/wp-load.php'; require '/wordpress/wp-content/uploads/waxsc-demo/setup-woocommerce.php';"
 		}
 	]
 }

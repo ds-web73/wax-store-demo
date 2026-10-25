@@ -7,11 +7,33 @@
  * @package WaxStoreDemo
  */
 
+// Playground shows only "critical error": print the real cause instead.
+register_shutdown_function(
+	static function () {
+		$error = error_get_last();
+
+		if ( $error && in_array( $error['type'], array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_RECOVERABLE_ERROR ), true ) ) {
+			echo "\nWAXSC DEMO ERROR: " . $error['message'] . ' in ' . $error['file'] . ':' . $error['line'] . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- demo diagnostics.
+		}
+	}
+);
+
 if ( ! class_exists( 'WooCommerce' ) || ! class_exists( \WaxStore\Catalog\Commerce\WooSync::class ) ) {
+	echo "WAXSC DEMO: WooCommerce or Wax Store Catalog is not active.\n";
 	return;
 }
 
 wp_set_current_user( 1 );
+wp_raise_memory_limit( 'admin' );
+
+if ( function_exists( 'set_time_limit' ) ) {
+	set_time_limit( 0 );
+}
+
+// "config" sets WooCommerce up; "convert" creates the products of 10 releases.
+$waxsc_step = defined( 'WAXSC_DEMO_STEP' ) ? WAXSC_DEMO_STEP : 'all';
+
+if ( 'convert' !== $waxsc_step ) :
 
 // A must-use plugin keeps WooCommerce light in the browser: no modern admin
 // screens, no marketplace or remote suggestions, no calls to outside services.
@@ -98,27 +120,44 @@ if ( ! $waxsc_shop ) {
 update_option( 'woocommerce_shop_page_id', (int) $waxsc_shop_id );
 update_option( 'waxsc_shop_page_checked', '1' );
 
-// Selling mode, then one product per release right away.
+// Selling mode.
 update_option( 'waxsc_commerce_provider', 'woocommerce' );
-
-$waxsc_ids = get_posts(
-	array(
-		'post_type'      => 'waxsc_release',
-		'post_status'    => 'publish',
-		'posts_per_page' => -1,
-		'fields'         => 'ids',
-	)
-);
-
-foreach ( $waxsc_ids as $waxsc_id ) {
-	\WaxStore\Catalog\Commerce\WooSync::sync( (int) $waxsc_id );
-
-	if ( ! get_post_meta( (int) $waxsc_id, '_waxsc_wc_product', true ) ) {
-		update_post_meta( (int) $waxsc_id, '_waxsc_wc_product', 0 );
-	}
-}
-
 update_option( 'waxsc_wc_deduplicated', '1' );
-delete_transient( 'waxsc_wc_pending' );
-
 flush_rewrite_rules();
+
+echo "WAXSC DEMO: WooCommerce configured.\n";
+
+endif;
+
+if ( 'config' !== $waxsc_step ) {
+	// Products of the releases not converted yet, 10 per run (or all with "all").
+	$waxsc_ids = get_posts(
+		array(
+			'post_type'      => 'waxsc_release',
+			'post_status'    => 'publish',
+			'posts_per_page' => 'all' === $waxsc_step ? -1 : 10,
+			'fields'         => 'ids',
+			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- demo setup.
+				array(
+					'key'     => '_waxsc_wc_product',
+					'compare' => 'NOT EXISTS',
+				),
+			),
+		)
+	);
+
+	foreach ( $waxsc_ids as $waxsc_id ) {
+		try {
+			\WaxStore\Catalog\Commerce\WooSync::sync( (int) $waxsc_id );
+		} catch ( \Throwable $waxsc_error ) {
+			echo 'WAXSC DEMO: release ' . (int) $waxsc_id . ': ' . $waxsc_error->getMessage() . ' in ' . $waxsc_error->getFile() . ':' . $waxsc_error->getLine() . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- demo diagnostics.
+		}
+
+		if ( ! get_post_meta( (int) $waxsc_id, '_waxsc_wc_product', true ) ) {
+			update_post_meta( (int) $waxsc_id, '_waxsc_wc_product', 0 );
+		}
+	}
+
+	delete_transient( 'waxsc_wc_pending' );
+	echo 'WAXSC DEMO: ' . count( $waxsc_ids ) . " releases converted.\n";
+}
