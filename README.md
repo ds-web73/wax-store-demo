@@ -6,6 +6,9 @@ un WordPress complet qui tourne dans le navigateur.
 
 **[Essayer la démo](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/ds-web73/wax-store-demo/main/blueprint.json)**
 
+**[Essayer la démo avec WooCommerce](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/ds-web73/wax-store-demo/main/blueprint-woocommerce.json)** :
+panier, commande et paiement en boutique. Plus lente à démarrer (une à deux minutes).
+
 Chaque visiteur reçoit sa propre copie du site, déjà connecté en administrateur
 (identifiant `admin`, mot de passe `password`). Rien n'est conservé : tout
 disparaît à la fermeture de l'onglet.
@@ -29,9 +32,19 @@ illustration de disque réel n'est utilisée.
 Les envois d'e-mails et les services extérieurs (pochettes automatiques) ne
 fonctionnent pas dans Playground. Les formulaires enregistrent bien les demandes.
 
+La démo WooCommerce est allégée pour tenir dans le navigateur : écrans
+d'administration modernes de WooCommerce et suggestions désactivés, appels aux
+services extérieurs bloqués, et réservation temporaire du stock pendant le
+paiement désactivée (Playground utilise SQLite, que cette fonction ne prend pas
+en charge ; le stock est bien décompté à la commande). Sur un vrai site, rien
+de tout cela n'est nécessaire. Évitez d'installer WooCommerce à la main dans
+la démo de base : sans ces réglages, Playground sature et finit par afficher
+« 403 Forbidden ».
+
 ## Contenu du dépôt
 
 - `blueprint.json` : la recette de la démo (langue, thème, extension, contenu).
+- `blueprint-woocommerce.json` : la même, avec WooCommerce installé et configuré.
   Le thème et l'extension sont chargés depuis les dépôts `ds-web73/wax-store`
   et `ds-web73/wax-store-catalog` : la démo suit leurs mises à jour.
 - `demo-content.zip` : le script de mise en place et les pochettes, téléchargés
