@@ -1,0 +1,64 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Wax Store – démonstration",
+		"description": "Un site de disquaire complet : thème Wax Store et extension Wax Store Catalog, avec une trentaine de disques de démonstration.",
+		"author": "ds-web73",
+		"categories": [ "Ecommerce" ]
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "setSiteLanguage",
+			"language": "fr_FR"
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "git:directory",
+				"url": "https://github.com/ds-web73/wax-store",
+				"ref": "main",
+				"refType": "branch",
+				"path": "/"
+			},
+			"options": {
+				"activate": true,
+				"targetFolderName": "wax-store"
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "git:directory",
+				"url": "https://github.com/ds-web73/wax-store-catalog",
+				"ref": "main",
+				"refType": "branch",
+				"path": "/"
+			},
+			"options": {
+				"activate": true,
+				"targetFolderName": "wax-store-catalog"
+			}
+		},
+		{
+			"step": "unzip",
+			"zipFile": {
+				"resource": "url",
+				"url": "https://raw.githubusercontent.com/ds-web73/wax-store-demo/main/demo-content.zip"
+			},
+			"extractToPath": "/wordpress/wp-content/uploads/waxsc-demo"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; require '/wordpress/wp-content/uploads/waxsc-demo/setup.php';"
+		}
+	]
+}
