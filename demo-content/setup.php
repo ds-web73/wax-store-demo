@@ -58,13 +58,41 @@ $waxsc_home = $waxsc_demo_page(
 	'accueil',
 	'<!-- wp:pattern {"slug":"wax-store/shop-intro"} /-->' . "\n"
 	. '<!-- wp:pattern {"slug":"wax-store-catalog/latest-arrivals"} /-->' . "\n"
-	. '<!-- wp:pattern {"slug":"wax-store/practical-info"} /-->',
+	. '<!-- wp:group {"className":"is-style-divider","layout":{"type":"constrained"}} --><div class="wp-block-group is-style-divider">'
+	. '<!-- wp:heading --><h2 class="wp-block-heading">Venir à la boutique</h2><!-- /wp:heading -->'
+	. '<!-- wp:columns --><div class="wp-block-columns">'
+	. '<!-- wp:column --><div class="wp-block-column"><!-- wp:waxsc/shop-status {"showWeek":true} /--></div><!-- /wp:column -->'
+	. '<!-- wp:column --><div class="wp-block-column"><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Vendre vos disques</h3><!-- /wp:heading -->'
+	. '<!-- wp:paragraph --><p>Nous rachetons les collections de toutes tailles. Apportez-les, ou décrivez-les-nous avec quelques photos.</p><!-- /wp:paragraph -->'
+	. '<!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="' . esc_url( home_url( '/vendez-nous-vos-disques/' ) ) . '">Proposer mes disques</a></div><!-- /wp:button --></div><!-- /wp:buttons -->'
+	. '</div><!-- /wp:column --></div><!-- /wp:columns --></div><!-- /wp:group -->',
 	0
 );
+update_post_meta( $waxsc_home, '_wp_page_template', 'page-no-title' );
 $waxsc_reserve = $waxsc_demo_page( 'Réserver un disque', 'reserver', '<!-- wp:paragraph --><p>Un disque vous intéresse ? Réservez-le, nous le gardons de côté 7 jours.</p><!-- /wp:paragraph -->' . "\n" . '<!-- wp:waxsc/reservation-form /-->', 3 );
 $waxsc_sell    = $waxsc_demo_page( 'Vendez-nous vos disques', 'vendez-nous-vos-disques', '<!-- wp:paragraph --><p>Nous rachetons disques et collections de toutes tailles. Parlez-nous des vôtres : nous répondons à chaque proposition.</p><!-- /wp:paragraph -->' . "\n" . '<!-- wp:waxsc/sell-form /-->', 4 );
 $waxsc_info    = $waxsc_demo_page( 'Infos pratiques', 'infos-pratiques', '<!-- wp:waxsc/shop-status {"showWeek":true} /-->', 5 );
 $waxsc_legal   = $waxsc_demo_page( 'Mentions légales', 'mentions-legales', '<!-- wp:shortcode -->[waxsc_legal_notice]<!-- /wp:shortcode -->', 9 );
+
+// Menu: the catalog archive is not a page, so it needs an explicit link.
+if ( ! get_posts( array( 'post_type' => 'wp_navigation', 'numberposts' => 1, 'post_status' => 'publish' ) ) ) {
+	$waxsc_link = static function ( string $label, int $page ): string {
+		return '<!-- wp:navigation-link {"label":"' . $label . '","type":"page","id":' . $page . ',"url":"' . esc_url( get_permalink( $page ) ) . '","kind":"post-type"} /-->';
+	};
+
+	wp_insert_post(
+		array(
+			'post_type'    => 'wp_navigation',
+			'post_status'  => 'publish',
+			'post_title'   => 'Menu principal',
+			'post_content' => $waxsc_link( 'Accueil', $waxsc_home )
+				. '<!-- wp:navigation-link {"label":"Catalogue","url":"' . esc_url( (string) get_post_type_archive_link( 'waxsc_release' ) ) . '","kind":"custom"} /-->'
+				. $waxsc_link( 'Réserver', $waxsc_reserve )
+				. $waxsc_link( 'Vendre vos disques', $waxsc_sell )
+				. $waxsc_link( 'Infos pratiques', $waxsc_info ),
+		)
+	);
+}
 
 update_option( 'show_on_front', 'page' );
 update_option( 'page_on_front', $waxsc_home );

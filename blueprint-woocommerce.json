@@ -47,6 +47,10 @@
 			}
 		},
 		{
+			"step": "setSiteLanguage",
+			"language": "fr_FR"
+		},
+		{
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "git:directory",
