@@ -58,8 +58,8 @@ $waxsc_home = $waxsc_demo_page(
 	'accueil',
 	'<!-- wp:pattern {"slug":"wax-store/shop-intro"} /-->' . "\n"
 	. '<!-- wp:pattern {"slug":"wax-store-catalog/latest-arrivals"} /-->' . "\n"
-	. '<!-- wp:group {"className":"is-style-divider","layout":{"type":"constrained"}} --><div class="wp-block-group is-style-divider">'
-	. '<!-- wp:heading --><h2 class="wp-block-heading">Venir à la boutique</h2><!-- /wp:heading -->'
+	. '<!-- wp:group {"align":"wide","layout":{"type":"default"}} --><div class="wp-block-group alignwide">'
+	. '<!-- wp:group {"className":"is-style-divider","layout":{"type":"default"}} --><div class="wp-block-group is-style-divider"><!-- wp:heading --><h2 class="wp-block-heading">Venir à la boutique</h2><!-- /wp:heading --></div><!-- /wp:group -->'
 	. '<!-- wp:columns --><div class="wp-block-columns">'
 	. '<!-- wp:column --><div class="wp-block-column"><!-- wp:waxsc/shop-status {"showWeek":true} /--></div><!-- /wp:column -->'
 	. '<!-- wp:column --><div class="wp-block-column"><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Vendre vos disques</h3><!-- /wp:heading -->'
