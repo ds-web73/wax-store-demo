@@ -12,7 +12,7 @@ require_once ABSPATH . 'wp-admin/includes/image.php';
 
 wp_set_current_user( 1 );
 
-update_option( 'blogname', 'Northside Records' );
+update_option( 'blogname', 'Rookery Records' );
 update_option( 'blogdescription', 'Independent record shop since 1998' );
 update_option( 'permalink_structure', '/%postname%/' );
 
