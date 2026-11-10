@@ -31,6 +31,9 @@ update_option( 'permalink_structure', '/%postname%/' );
 update_option( 'blogname', 'Le Bac à Vinyles' );
 update_option( 'blogdescription', 'Disquaire indépendant – démonstration de Wax Store' );
 update_option( 'timezone_string', 'Europe/Paris' );
+update_option( 'date_format', 'j F Y' );
+update_option( 'time_format', 'G \\h i' );
+update_option( 'start_of_week', 1 );
 
 /* Pages ------------------------------------------------------------------ */
 

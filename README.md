@@ -9,6 +9,9 @@ un WordPress complet qui tourne dans le navigateur.
 **[Essayer la démo avec WooCommerce](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/ds-web73/wax-store-demo/main/blueprint-woocommerce.json)** :
 panier, commande et paiement en boutique. Plus lente à démarrer (une à deux minutes).
 
+**[Thème seul, pour la capture de l’annuaire](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/ds-web73/wax-store-demo/main/blueprint-theme.json)** :
+le thème Wax Store sans l’extension, en anglais, avec un disquaire et des artistes fictifs.
+
 Chaque visiteur reçoit sa propre copie du site, déjà connecté en administrateur
 (identifiant `admin`, mot de passe `password`). Rien n'est conservé : tout
 disparaît à la fermeture de l'onglet.
@@ -45,6 +48,7 @@ la démo de base : sans ces réglages, Playground sature et finit par afficher
 
 - `blueprint.json` : la recette de la démo (langue, thème, extension, contenu).
 - `blueprint-woocommerce.json` : la même, avec WooCommerce installé et configuré.
+- `blueprint-theme.json` : le thème seul, en anglais, pour la capture d’écran de l’annuaire des thèmes.
   Le thème et l'extension sont chargés depuis les dépôts `ds-web73/wax-store`
   et `ds-web73/wax-store-catalog` : la démo suit leurs mises à jour.
 - `demo-content.zip` : le script de mise en place et les pochettes, téléchargés

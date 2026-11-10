@@ -1,0 +1,45 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Wax Store theme – screenshot",
+		"description": "The Wax Store theme alone, in English, with fictional content.",
+		"author": "ds-web73",
+		"categories": [
+			"Themes"
+		]
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"login": false,
+	"steps": [
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "git:directory",
+				"url": "https://github.com/ds-web73/wax-store",
+				"ref": "main",
+				"refType": "branch",
+				"path": "/"
+			},
+			"options": {
+				"activate": true,
+				"targetFolderName": "wax-store"
+			}
+		},
+		{
+			"step": "unzip",
+			"zipFile": {
+				"resource": "url",
+				"url": "https://raw.githubusercontent.com/ds-web73/wax-store-demo/main/demo-content.zip"
+			},
+			"extractToPath": "/wordpress/wp-content/uploads/waxsc-demo"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; require '/wordpress/wp-content/uploads/waxsc-demo/setup-theme.php';"
+		}
+	]
+}
